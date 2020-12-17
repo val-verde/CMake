@@ -396,7 +396,11 @@ static void uv__process_child_init(const uv_process_options_t* options,
       }
     }
 
+#if __ANDROID__
+    r = -sched_getaffinity(0, sizeof(cpu_set_t), &cpuset);
+#else
     r = -pthread_setaffinity_np(pthread_self(), sizeof(cpuset), &cpuset);
+#endif
     if (r != 0) {
       uv__write_int(error_fd, r);
       _exit(127);

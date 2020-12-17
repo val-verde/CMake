@@ -47,6 +47,16 @@ std::set<size_t> GetProcessorsAvailable()
         }
       }
     }
+#  elif defined(__ANDROID__)
+    cm_cpuset_t cpuset;
+    CPU_ZERO(&cpuset); // NOLINT(clang-tidy)
+    if (sched_getaffinity(0, sizeof(cpu_set_t), &cpuset) == 0) {
+      for (int i = 0; i < cpumask_size; ++i) {
+        if (CPU_ISSET(i, &cpuset)) {
+          processorsAvailable.insert(i);
+        }
+      }
+    }
 #  else
     cm_cpuset_t cpuset;
     CPU_ZERO(&cpuset); // NOLINT(clang-tidy)
