@@ -192,7 +192,6 @@ if(NOT CMAKE_CUDA_COMPILER_ID_RUN)
     set(CMAKE_CUDA_DEVICE_LINKER "${CMAKE_CUDA_COMPILER_TOOLKIT_ROOT}/bin/nvlink${CMAKE_EXECUTABLE_SUFFIX}")
     set(CMAKE_CUDA_FATBINARY "${CMAKE_CUDA_COMPILER_TOOLKIT_ROOT}/bin/fatbinary${CMAKE_EXECUTABLE_SUFFIX}")
 
-
     # In a non-scattered installation the following are equivalent to CMAKE_CUDA_COMPILER_TOOLKIT_ROOT.
     # We first check for a non-scattered installation to prefer it over a scattered installation.
 
@@ -203,6 +202,8 @@ if(NOT CMAKE_CUDA_COMPILER_ID_RUN)
       set(CMAKE_CUDA_COMPILER_LIBRARY_ROOT "${CMAKE_SYSROOT_LINK}/usr/lib/cuda")
     elseif(EXISTS "${CMAKE_SYSROOT}/usr/lib/cuda/nvvm/libdevice")
       set(CMAKE_CUDA_COMPILER_LIBRARY_ROOT "${CMAKE_SYSROOT}/usr/lib/cuda")
+    elseif(EXISTS "/usr/lib/cuda/nvvm/libdevice")
+      set(CMAKE_CUDA_COMPILER_LIBRARY_ROOT "/usr/lib/cuda")
     else()
       message(FATAL_ERROR "Couldn't find CUDA library root.")
     endif()
@@ -212,6 +213,8 @@ if(NOT CMAKE_CUDA_COMPILER_ID_RUN)
       set(CMAKE_CUDA_COMPILER_TOOLKIT_LIBRARY_ROOT "${CMAKE_SYSROOT_LINK}/usr/lib/nvidia-cuda-toolkit")
     elseif(EXISTS "${CMAKE_SYSROOT}/usr/lib/nvidia-cuda-toolkit/bin/crt/link.stub")
       set(CMAKE_CUDA_COMPILER_TOOLKIT_LIBRARY_ROOT "${CMAKE_SYSROOT}/usr/lib/nvidia-cuda-toolkit")
+    elseif(EXISTS "/usr/lib/nvidia-cuda-toolkit/bin/crt/link.stub")
+      set(CMAKE_CUDA_COMPILER_TOOLKIT_LIBRARY_ROOT "/usr/lib/nvidia-cuda-toolkit")
     else()
       set(CMAKE_CUDA_COMPILER_TOOLKIT_LIBRARY_ROOT "${CMAKE_CUDA_COMPILER_TOOLKIT_ROOT}")
     endif()
